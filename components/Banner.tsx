@@ -1,6 +1,16 @@
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 const Banner = () => {
+    const handleScroll = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+        e.preventDefault();
+        const href = e.currentTarget.href;
+        const targetId = href.replace(/.*\#/, "");
+        const elem = document.getElementById(targetId);
+        elem?.scrollIntoView({
+            behavior: "smooth",
+        });
+    }
     return (
         <section id='home' className='flex flex-col gap-4 py-10 mx-auto max-w-contentContainer mdl:py-24 lgl:gap-8 mdl:px-10 xl:px-4'>
             <motion.h3 initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.5, delay: 0.6 }} className='text-lg tracking-wide font-titleFont text-textGreen'>
@@ -18,9 +28,11 @@ const Banner = () => {
                     </span>
                 </a>
             </motion.p>
-            <motion.button initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.5, delay: 0.9 }} className="text-sm tracking-wide duration-300 border rounded-md w-52 h-14 font-titleFont border-textGreen text-textGreen hover:bg-hoverColor">
-                Check out my project
-            </motion.button>
+            <Link href="#project" onClick={handleScroll}>
+                <motion.button initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.5, delay: 0.9 }} className="text-sm tracking-wide duration-300 border rounded-md w-52 h-14 font-titleFont border-textGreen text-textGreen hover:bg-hoverColor">
+                    Check out my project
+                </motion.button>
+            </Link>
         </section>
     )
 }
