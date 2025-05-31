@@ -5,7 +5,26 @@ import { motion } from "framer-motion"
 import { useEffect, useRef, useState } from "react"
 import { MdOutlineClose } from "react-icons/md"
 import { TbBrandGithub } from "react-icons/tb"
-import { SlSocialFacebook, SlSocialInstagram, SlSocialLinkedin, SlSocialYoutube } from "react-icons/sl"
+import { SlSocialFacebook, SlSocialInstagram, SlSocialLinkedin, SlSocialTwitter } from "react-icons/sl"
+import { SiDiscord, SiTiktok } from "react-icons/si"
+
+const iconSocial = {
+    facebook: SlSocialFacebook,
+    twitter: SlSocialTwitter,
+    instagram: SlSocialInstagram,
+    linkedin: SlSocialLinkedin,
+    tiktok: SiTiktok,
+    github: TbBrandGithub,
+    discord: SiDiscord,
+}
+
+type SocialName = keyof typeof iconSocial;
+
+type SocialItem = {
+    id: number;
+    nama: string; // atau: SocialName jika yakin aman
+    link: string;
+};
 
 const Navbar = () => {
     const ref = useRef<HTMLDivElement>(null);
@@ -39,11 +58,17 @@ const Navbar = () => {
     }
 
     const [mails, setMails] = useState([]);
-
     useEffect(() => {
         fetch('/api/mails')
             .then(res => res.json())
             .then(data => setMails(data))
+    }, []);
+
+    const [socials, setSocials] = useState<SocialItem[]>([]);
+    useEffect(() => {
+        fetch('/api/socials')
+            .then(res => res.json())
+            .then(data => setSocials(data))
     }, []);
 
     return (
@@ -122,13 +147,18 @@ const Navbar = () => {
                                     <Link href="/assets/mahesora-cv.pdf" target="_blank">
                                         <motion.button initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6, ease: "easeIn" }} className="w-32 h-10 rounded-md text-textGreen text-[13px] border border-textGreen hover:bg-hoverColor duration-300">Resume</motion.button>
                                     </Link>
-                                    <div className="flex gap-4 ">
-                                        <motion.a initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 1, ease: "easeIn" }} href="https://github.com/putuokky" target="_blank">
-                                            <span className="w-10 h-10 text-xl bg-bodyColor border-[1px] border-zinc-700 hover:border-textGreen text-zinc-200 rounded-full inline-flex items-center justify-center hover:text-textGreen cursor-pointer hover:-translate-y-2 transition-all duration-300">
-                                                <TbBrandGithub />
-                                            </span>
-                                        </motion.a>
-                                        <motion.a initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 1, ease: "easeIn" }} href="https://www.tiktok.com/@vannemplo" target="_blank">
+                                    <div className="flex gap-2">
+                                        {socials.map(({ id, nama, link }) => {
+                                            const Icon = iconSocial[nama.toLowerCase() as SocialName];
+                                            return (
+                                                <motion.a initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 1, ease: "easeIn" }} key={id} href={link} target="_blank">
+                                                    <span className="w-10 h-10 text-xl bg-bodyColor border-[1px] border-zinc-700 hover:border-textGreen text-zinc-200 rounded-full inline-flex items-center justify-center hover:text-textGreen cursor-pointer hover:-translate-y-2 transition-all duration-300">
+                                                        {Icon ? <Icon /> : <span>{nama}</span>}
+                                                    </span>
+                                                </motion.a>
+                                            );
+                                        })}
+                                        {/* <motion.a initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 1, ease: "easeIn" }} href="https://www.tiktok.com/@vannemplo" target="_blank">
                                             <span className="w-10 h-10 text-xl bg-bodyColor border-[1px] border-zinc-700 hover:border-textGreen text-zinc-200 rounded-full inline-flex items-center justify-center hover:text-textGreen cursor-pointer hover:-translate-y-2 transition-all duration-300">
                                                 <SlSocialYoutube />
                                             </span>
@@ -147,7 +177,7 @@ const Navbar = () => {
                                             <span className="w-10 h-10 text-xl bg-bodyColor border-[1px] border-zinc-700 hover:border-textGreen text-zinc-200 rounded-full inline-flex items-center justify-center hover:text-textGreen cursor-pointer hover:-translate-y-2 transition-all duration-300">
                                                 <SlSocialInstagram />
                                             </span>
-                                        </motion.a>
+                                        </motion.a> */}
                                     </div>
                                 </div>
                                 {mails.map(({ id, email }) => {

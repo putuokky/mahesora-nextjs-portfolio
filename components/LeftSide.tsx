@@ -1,17 +1,17 @@
 import { TbBrandGithub } from "react-icons/tb";
-// import { SlSocialYoutube } from "react-icons/sl";
-import { SlSocialLinkedin, SlSocialFacebook, SlSocialInstagram } from "react-icons/sl";
+import { SlSocialLinkedin, SlSocialFacebook, SlSocialInstagram, SlSocialTwitter } from "react-icons/sl";
 import { useEffect, useState } from "react";
-import { SiTiktok } from "react-icons/si";
+import { SiDiscord, SiTiktok } from "react-icons/si";
+import Link from "next/link";
 
 const iconSocial = {
     facebook: SlSocialFacebook,
-    // twitter:SlSocialFacebook,
+    twitter: SlSocialTwitter,
     instagram: SlSocialInstagram,
     linkedin: SlSocialLinkedin,
     tiktok: SiTiktok,
     github: TbBrandGithub,
-    // youtube: SlSocialYoutube,
+    discord: SiDiscord,
 }
 
 type SocialName = keyof typeof iconSocial;
@@ -33,8 +33,8 @@ const LeftSide = () => {
 
     return (
         <div className="flex flex-col items-center justify-end w-full h-full gap-4 text-textLight">
-            {/* <div className="flex flex-col gap-4">
-                <a href="https://github.com/putuokky" target="_blank">
+            <div className="flex flex-col gap-4">
+                {/* <a href="https://github.com/putuokky" target="_blank">
                     <span className="inline-flex items-center justify-center w-10 h-10 text-xl transition-all duration-300 rounded-full cursor-pointer bg-hoverColor hover:text-textGreen hover:-translate-y-2">
                         <TbBrandGithub />
                     </span>
@@ -58,17 +58,15 @@ const LeftSide = () => {
                     <span className="inline-flex items-center justify-center w-10 h-10 text-xl transition-all duration-300 rounded-full cursor-pointer bg-hoverColor hover:text-textGreen hover:-translate-y-2">
                         <SlSocialInstagram />
                     </span>
-                </a>
-            </div> */}
-            <div className="flex flex-col gap-4">
+                </a> */}
                 {socials.map(({ id, nama, link }) => {
                     const Icon = iconSocial[nama.toLowerCase() as SocialName];
                     return (
-                        <a key={id} href={link} target="_blank" rel="noopener noreferrer" aria-label={nama}>
+                        <Link key={id} href={link} target="_blank" rel="noopener noreferrer" aria-label={nama}>
                             <span className="inline-flex items-center justify-center w-10 h-10 text-xl transition-all duration-300 rounded-full cursor-pointer bg-hoverColor hover:text-textGreen hover:-translate-y-2">
                                 {Icon ? <Icon /> : <span>{nama}</span>}
                             </span>
-                        </a>
+                        </Link>
                     );
                 })}
             </div>
